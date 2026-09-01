@@ -10,7 +10,6 @@ services:
     volumes:
       - ./Base de datos/test.sql:/docker-entrypoint-initdb.d/init.sql
       - data:/var/lib/mysql
-
     networks:
       - red_taller_software
 
@@ -18,14 +17,14 @@ services:
     build:
       context: .
       dockerfile: ./Backend/Dockerfile
-    
-   
+    container_name: grupo5_backend
     depends_on:
       - db_test
-    
     networks:
       - red_taller_software
     environment:
+      - PORT=4005
+      - ORIGIN=http://grupo5.146.83.216.166.nip.io
       - DB_HOST=db_test
       - DB_PORT=3306
       - DB_USER=manager_test
@@ -36,13 +35,12 @@ services:
     build:
       context: ./Frontend
       dockerfile: ./dockerfile
-    ports:
-      - 3009
+    container_name: grupo5_frontend
     networks:
       - red_taller_software
     env_file:
       - ./Frontend/.env
-      
+
 volumes:
   data:
     external: false
